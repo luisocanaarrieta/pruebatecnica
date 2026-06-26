@@ -5,6 +5,7 @@ import com.prueba.tipo_cambio_api.Repository.IOperacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,12 +36,15 @@ public class OperacionService implements  IOperacionService{
 
     @Override
     public Operacion guardar(Operacion op) {
-
         validar(op);
 
-        return repository.save(op);
+        // inicializar campos calculados
+        op.setFechaOperacion(LocalDate.now());
+        op.setMontoDestino(op.getMontoOrigen().multiply(op.getTipoCambio()));
 
+        return repository.save(op);
     }
+
 
     @Override
     public Operacion actualizar(Long id,Operacion op){
