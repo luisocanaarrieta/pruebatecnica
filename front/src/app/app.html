@@ -1,0 +1,67 @@
+<div class="container">
+  <h1>Operaciones FX</h1>
+
+  <!-- Formulario -->
+  <form [formGroup]="form" (ngSubmit)="registrarOperacion()">
+    <label>Moneda Origen:</label>
+    <select formControlName="monedaOrigen">
+      <option value="USD">USD</option>
+      <option value="PEN">PEN</option>
+      <option value="EUR">EUR</option>
+    </select>
+
+    <label>Moneda Destino:</label>
+    <select formControlName="monedaDestino">
+      <option value="USD">USD</option>
+      <option value="PEN">PEN</option>
+      <option value="EUR">EUR</option>
+    </select>
+
+    <label>Monto Origen:</label>
+    <input type="number" formControlName="montoOrigen">
+
+    <label>Tipo de Cambio:</label>
+    <input type="number" step="0.000001" formControlName="tipoCambio">
+
+    <p>Monto Destino calculado: {{ montoDestino() }}</p>
+
+    <button type="submit" [disabled]="form.invalid">Registrar</button>
+  </form>
+
+  <!-- Tabla -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Origen</th>
+        <th>Destino</th>
+        <th>Monto</th>
+        <th>TC</th>
+        <th>Monto Destino</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(op of operaciones(); track $index) {
+      <tr>
+        <td>{{ op.id }}</td>
+        <td>{{ op.monedaOrigen }}</td>
+        <td>{{ op.monedaDestino }}</td>
+        <td>{{ op.montoOrigen }}</td>
+        <td>{{ op.tipoCambio }}</td>
+        <td>{{ op.montoDestino }}</td>
+        <td>{{ op.fechaOperacion }}</td>
+        <td>{{ op.estado }}</td>
+        <td>
+          <button (click)="actualizarEstado(op.id!, 'EJECUTADA')" [disabled]="op.estado === 'ANULADA'">
+            Cambiar a EJECUTADA
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+
+  </table>
+</div>
